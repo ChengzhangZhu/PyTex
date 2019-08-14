@@ -11,6 +11,7 @@ setuptools.setup(
     description='PyTex: Latex tools for easy manuscript writing.',
     long_description=long_description,
     long_description_content_type="text/markdown",
+    url="https://github.com/chengzhangzhu/pytex",
     packages=setuptools.find_packages(),
     install_requires=['numpy', 'pandas'],
     classifiers=[
