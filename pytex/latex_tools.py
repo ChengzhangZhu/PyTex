@@ -39,7 +39,7 @@ def table2csv(file_path, end_pattern=None, head=False, save_name='latex_table'):
     for index, head_content in enumerate(head_list):
         content_dict[head_content] = content_list[index]
     data_frame = pd.DataFrame(content_dict, columns=head_list)
-    data_frame.to_csv(save_name, header=head, index=False)
+    data_frame.to_csv(save_name+'.csv', header=head, index=False)
 
 
 def _read_line_content(line):
