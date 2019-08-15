@@ -11,12 +11,14 @@ Go into *dist* folder and execute:
 See demos in *demo* folder.
 
 # Available Tools
-+ `table2csv(file_path, end_pattern=None, head=False, save_name='latex_table')`
++ `table2csv(file_path, end_pattern=None, head=False, save_name='latex_table', clean_pattern=None)`
     Transform latex table to Excel editable csv file
     + `file_path`: str, the latex table path
     + `end_pattern`: str, the pattern at the end of each line
     + `head`: bool, whether the head line involved in the table
     + `save_name`: str, save name of the csv file; the default is 'latex_table'
+    + `clean_pattern`: list, specific the clean patterns; 
+                       the default is ['\\textbf{}', '\\mathbf{}', '\\bm{}', '\\textit{}']
     + `output`: None, generate a csv file as the save name 
 
 + `csv2latex(file_path, head=True, save_name='csv_latex')`

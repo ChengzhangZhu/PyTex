@@ -4,13 +4,15 @@ import numpy as np
 __all__ = ['table2csv', 'csv2latex']
 
 
-def table2csv(file_path, end_pattern=None, head=False, save_name='latex_table'):
+def table2csv(file_path, end_pattern=None, head=False, save_name='latex_table', clean_pattern=None):
     """
     Transform latex table to Excel editable csv file
     :param file_path: str, the latex table path
     :param end_pattern: str, the pattern at the end of each line
     :param head: bool, whether the head line involved in the table
     :param save_name: str, save name of the csv file; the default is 'latex_table'
+    :param clean_pattern: list, specific the clean patterns;
+                          the default is ['\\textbf{}', '\\mathbf{}', '\\bm{}', '\\textit{}']
     :return: generate a csv file as the save name
     """
     if end_pattern is None:
@@ -23,10 +25,10 @@ def table2csv(file_path, end_pattern=None, head=False, save_name='latex_table'):
     for line in content:
         if end_pattern in line:
             if head and not head_log:  # read head line
-                head_list = _read_line_content(line.strip()[:-len(end_pattern)])
+                head_list = _read_line_content(line.strip()[:-len(end_pattern)], clean_pattern=clean_pattern)
                 head_log = True
             else:
-                content_line = _read_line_content(line.strip()[:-len(end_pattern)])
+                content_line = _read_line_content(line.strip()[:-len(end_pattern)], clean_pattern=clean_pattern)
                 content_lines.append(content_line)
     assert len(content_lines) > 0, 'No data has been loaded!'
     dim = len(content_lines[0])
@@ -85,13 +87,16 @@ def csv2latex(file_path, head=True, save_name='csv_latex'):
         f.writelines("%s\n" % l for l in write_content)
 
 
-def _read_line_content(line):
+def _read_line_content(line, clean_pattern=None):
     content = line.split('&')
-    content = [_clean_content(i) for i in content]
+    content = [_clean_content(i, clean_pattern=clean_pattern) for i in content]
     return content
 
 
-def _clean_content(content):
+def _clean_content(content, clean_pattern=None):
+    if clean_pattern is None:
+        clean_pattern = ['\\textbf{}', '\\mathbf{}', '\\bm{}', '\\textit{}']
+    assert isinstance(clean_pattern, list), 'Clean pattern should be given by list.'
     content = content.strip(' ')
     content = content.strip()
     # clean math environment
@@ -99,8 +104,7 @@ def _clean_content(content):
     # clean highlight
     clean_flag = True
     while clean_flag:
-        content, clean_flag = _remove_latex_commend(content, ['\\textbf{}', '\\mathbf{}',
-                                                              '\\bm{}', '\\textit{}'])
+        content, clean_flag = _remove_latex_commend(content, clean_pattern)
     return content
 
 
