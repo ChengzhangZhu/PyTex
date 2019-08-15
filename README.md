@@ -21,9 +21,11 @@ See demos in *demo* folder.
                        the default is ['\\textbf{}', '\\mathbf{}', '\\bm{}', '\\textit{}']
     + `output`: None, generate a csv file as the save name 
 
-+ `csv2latex(file_path, head=True, save_name='csv_latex')`
++ `csv2latex(file_path, head=True, save_name='csv_latex', replace=None)`
     Transform a table with csv file to latex code
     + `file_path`: str, the csv file path
     + `head`: bool, whether the table contains a header; default is True
     + `save_name`: str, the generated latex code name
+    + `replace`: dict, a replace dict; if given, the key in the table will be replaced by the value; default is None
+
     + `output`: None, generate a file of latex code

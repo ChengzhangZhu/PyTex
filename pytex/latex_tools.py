@@ -44,18 +44,21 @@ def table2csv(file_path, end_pattern=None, head=False, save_name='latex_table', 
     data_frame.to_csv(save_name+'.csv', header=head, index=False)
 
 
-def csv2latex(file_path, head=True, save_name='csv_latex'):
+def csv2latex(file_path, head=True, save_name='csv_latex', replace=None):
     """
     Transform a table with csv file to latex code
     :param file_path: str, the csv file path
     :param head: bool, whether the table contains a header; default is True
     :param save_name: str, the generated latex code name
+    :param replace: dict, a replace dict; if given, the key in the table will be replaced by the value; default is None
     :return: generate a file of latex code
     """
     if head:
         data = pd.read_csv(file_path)
     else:
         data = pd.read_csv(file_path, header=None)
+    if replace is None:
+        replace = dict()
     head_list = data.columns.to_list()
     content = data.values
     write_content = []
@@ -65,7 +68,7 @@ def csv2latex(file_path, head=True, save_name='csv_latex'):
             # construct header
             header_content = ''
             for index, item in enumerate(head_list):
-                header_content += str(item)
+                header_content += str(replace[item] if item in replace else item)
                 if index != len(head_list) - 1:
                     header_content += '  &  '
                 else:
@@ -76,7 +79,7 @@ def csv2latex(file_path, head=True, save_name='csv_latex'):
         for line_index, line in enumerate(content):
             line_content = ''
             for index, item in enumerate(line):
-                line_content += str(item)
+                line_content += str(replace[item] if item in replace else item)
                 if index != len(line) - 1:
                     line_content += '  &  '
                 else:
