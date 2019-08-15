@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name='pytex',
-    version='0.0.8',
+    version='0.0.9',
     author='Chengzhang Zhu',
     author_email='kevin.zhu.china@gmail.com',
     description='PyTex: Latex tools for easy manuscript writing.',
