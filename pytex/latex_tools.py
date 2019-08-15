@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-__all__ = ['table2csv']
+__all__ = ['table2csv', 'csv2latex']
 
 
 def table2csv(file_path, end_pattern=None, head=False, save_name='latex_table'):
@@ -40,6 +40,49 @@ def table2csv(file_path, end_pattern=None, head=False, save_name='latex_table'):
         content_dict[head_content] = content_list[index]
     data_frame = pd.DataFrame(content_dict, columns=head_list)
     data_frame.to_csv(save_name+'.csv', header=head, index=False)
+
+
+def csv2latex(file_path, head=True, save_name='csv_latex'):
+    """
+    Transform a table with csv file to latex code
+    :param file_path: str, the csv file path
+    :param head: bool, whether the table contains a header; default is True
+    :param save_name: str, the generated latex code name
+    :return: generate a file of latex code
+    """
+    if head:
+        data = pd.read_csv(file_path)
+    else:
+        data = pd.read_csv(file_path, header=None)
+    head_list = data.columns.to_list()
+    content = data.values
+    write_content = []
+    with open(save_name, 'w') as f:
+        if head:
+            write_content.append('\\toprule')
+            # construct header
+            header_content = ''
+            for index, item in enumerate(head_list):
+                header_content += str(item)
+                if index != len(head_list) - 1:
+                    header_content += '  &  '
+                else:
+                    header_content += '  \\\\'
+            write_content.append(header_content)
+            write_content.append('\\midrule')
+        # construct content
+        for line_index, line in enumerate(content):
+            line_content = ''
+            for index, item in enumerate(line):
+                line_content += str(item)
+                if index != len(line) - 1:
+                    line_content += '  &  '
+                else:
+                    line_content += '  \\\\'
+                    write_content.append(line_content)
+            if line_index == len(content) - 1:
+                write_content.append('\\bottomrule')
+        f.writelines("%s\n" % l for l in write_content)
 
 
 def _read_line_content(line):
