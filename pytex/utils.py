@@ -28,9 +28,9 @@ def table2rank(table, transpose=False, is_large_value_high_performance=True, add
     rank_table = list()
     for row in data:
         if is_large_value_high_performance:
-            index = np.argsort(row)
-        else:
             index = np.argsort(-row)
+        else:
+            index = np.argsort(row)
         rank = np.zeros(len(index))
         for i, value in enumerate(index):
             if i > 0:
