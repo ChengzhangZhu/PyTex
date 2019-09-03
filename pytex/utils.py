@@ -53,8 +53,6 @@ def table2rank(table, transpose=False, is_large_value_high_performance=True, add
                     index_name = np.concatenate([index_name, np.array(['AR'])])
                 else:
                     column_name = np.concatenate([column_name, np.asarray(['AR'])])
-            print(index_name[:, np.newaxis])
-            print(rank_table)
             rank_table = np.concatenate([index_name[:, np.newaxis], rank_table], axis=1)
         rank_table = pd.DataFrame(data=rank_table, columns=column_name)
     return rank_table
